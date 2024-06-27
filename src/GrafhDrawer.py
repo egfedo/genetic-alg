@@ -9,7 +9,7 @@ class GrafhDrawer:
         for i in range(len(matr)):
             g.add_node(str(i+1))
         for i in range(len(matr)):
-            for j in range(len(matr)):
+            for j in range(i):
                 el = matr[i][j]
                 if el:
                     g.add_edge(str(i+1), str(j+1), weight=matr[i][j])
