@@ -1,5 +1,5 @@
 import tkinter as tk
-import GrafhDrawer as gd
+import GraphDrawer as gd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from MartixCreator import MatrixCreator
 from tkinter.messagebox import showerror, showwarning, showinfo
@@ -7,7 +7,7 @@ from tkinter.messagebox import showerror, showwarning, showinfo
 
 class Gui:
     count_v = 0
-    graph_drawer = gd.GrafhDrawer()
+    graph_drawer = gd.GraphDrawer()
 
     def __init__(self):
         self.window = tk.Tk()
