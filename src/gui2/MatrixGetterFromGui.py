@@ -2,22 +2,27 @@ import tkinter as tk
 from tkinter.messagebox import showerror
 import random
 
+
 class MatrixGetterFromGui:
     count_v = 0
+
     def __init__(self, gui):
         self.main_gui = gui
         self.win = tk.Toplevel(gui.window)
         self.win.title('Чтение матрицы смежности из файла')
         self.win.geometry("700x700")
 
+        self.entries_for_matr = []
+
         lbl = tk.Label(self.win, text="Количество вершин в графе: ", font=14)
-        self.entry = tk.Entry(self.win, bg="#fafafa", font=14, width=3, relief="solid", bd=2,)
-        btn_for_count_v = tk.Button(self.win, text="Построить матрицу для ввода", bg='green', font=14, relief="solid", bd=2,
+        self.entry = tk.Entry(self.win, bg="#fafafa", font=14, width=3, relief="solid", bd=2, )
+        btn_for_count_v = tk.Button(self.win, text="Построить матрицу для ввода", bg='silver', font=14, relief="solid",
+                                    bd=2,
                                     command=self.check_entry_and_create_new_matrix)
-        self.frm_matrix = tk.Frame(self.win, relief="solid", bd=2, bg='silver', width=600, height=600)
-        btn_for_save = tk.Button(self.win, text="Задать граф", bg='green', font=14, relief="solid", bd=2,
+        self.frm_matrix = tk.Frame(self.win, relief="solid", bd=2, width=600, height=600)
+        btn_for_save = tk.Button(self.win, text="Задать граф", bg='silver', font=14, relief="solid", bd=2,
                                  command=self.save_matrix)
-        btn_for_rand = tk.Button(self.win, text="Случайные веса", bg='green', font=14, relief="solid", bd=2,
+        btn_for_rand = tk.Button(self.win, text="Случайные веса", bg='silver', font=14, relief="solid", bd=2,
                                  command=self.random_weighs)
 
         lbl.grid(row=0, column=0, padx=5, pady=5)
@@ -27,16 +32,13 @@ class MatrixGetterFromGui:
         btn_for_save.grid(row=2, column=7, padx=5, pady=5)
         btn_for_rand.grid(row=2, column=0, padx=5, pady=5)
 
-
     def create_new_matrix(self):
         cell_size = int(600 / (self.count_v + 1))
 
         if self.count_v != 0:
             self.frm_matrix.destroy()
-            self.frm_matrix = tk.Frame(self.win, relief="solid", bd=2, bg='silver', width=600, height=600)
+            self.frm_matrix = tk.Frame(self.win, relief="solid", bd=2, width=600, height=600)
             self.frm_matrix.grid(row=1, column=0, columnspan=8, padx=50, pady=5)
-
-        self.entries_for_matr = []
 
         for i in range(self.count_v):
             self.entries_for_matr.append([None] * self.count_v)
@@ -68,7 +70,6 @@ class MatrixGetterFromGui:
                 lbl = tk.Label(self.frm_matrix, bg="gray", font=20, width=2, relief="solid", bd=2,
                                justify='center', text='')
                 lbl.grid(row=j + 1, column=i + 1, stick='wens')
-
 
     def check_entry_and_create_new_matrix(self):
         str_count_v = self.entry.get()
@@ -119,4 +120,3 @@ class MatrixGetterFromGui:
     def clear(self):
         for widget in self.frm_matrix.winfo_children():
             widget.destroy()
-

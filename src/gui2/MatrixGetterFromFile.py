@@ -11,7 +11,7 @@ class MatrixGetterFromFile:
         tk.Label(self.win, text="Путь к файлу:", font=14).grid(row=0, column=0, padx=15, pady=15)
         self.entry = tk.Entry(self.win, font=14, width=50)
         self.entry.grid(row=0, column=1, padx=15, pady=15)
-        tk.Button(self.win, text="Ок", font=14, command=self.save_matrix).grid(row=1, column=1, padx=15,
+        tk.Button(self.win, text="Ок", font=14, command=self.save_matrix, bg='silver').grid(row=1, column=1, padx=15,
                                                                                        pady=15)
 
     def save_matrix(self):

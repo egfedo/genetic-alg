@@ -1,6 +1,6 @@
 class ReaderMatrix:
-    f = None
     def __init__(self, filename):
+        self.f = None
         try:
             self.f = open(filename, "r")
         except FileNotFoundError:
