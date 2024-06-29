@@ -15,10 +15,10 @@ class MatrixGetterFromGui:
         self.entries_for_matr = []
 
         lbl = tk.Label(self.win, text="Количество вершин в графе: ", font=14)
-        self.entry = tk.Entry(self.win, bg="#fafafa", font=14, width=3, relief="solid", bd=2, )
+        entry = tk.Entry(self.win, bg="#fafafa", font=14, width=3, relief="solid", bd=2, )
         btn_for_count_v = tk.Button(self.win, text="Построить матрицу для ввода", bg='silver', font=14, relief="solid",
                                     bd=2,
-                                    command=self.check_entry_and_create_new_matrix)
+                                    command=lambda: self.check_entry_and_create_new_matrix(entry))
         self.frm_matrix = tk.Frame(self.win, relief="solid", bd=2, width=600, height=600)
         btn_for_save = tk.Button(self.win, text="Задать граф", bg='silver', font=14, relief="solid", bd=2,
                                  command=self.save_matrix)
@@ -26,7 +26,7 @@ class MatrixGetterFromGui:
                                  command=self.random_weighs)
 
         lbl.grid(row=0, column=0, padx=5, pady=5)
-        self.entry.grid(row=0, column=1, padx=5, pady=5)
+        entry.grid(row=0, column=1, padx=5, pady=5)
         btn_for_count_v.grid(row=0, column=2, padx=5, pady=5)
         self.frm_matrix.grid(row=1, column=0, columnspan=8, padx=50, pady=5)
         btn_for_save.grid(row=2, column=7, padx=5, pady=5)
@@ -71,8 +71,8 @@ class MatrixGetterFromGui:
                                justify='center', text='')
                 lbl.grid(row=j + 1, column=i + 1, stick='wens')
 
-    def check_entry_and_create_new_matrix(self):
-        str_count_v = self.entry.get()
+    def check_entry_and_create_new_matrix(self, entry):
+        str_count_v = entry.get()
         if not str_count_v.isdigit() or int(str_count_v) <= 0 or int(str_count_v) > 20:
             showerror("Ошибка", "Количество вершин графа задаётся целыми положительными числами от 1 до 20!")
             return
