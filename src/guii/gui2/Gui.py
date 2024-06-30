@@ -120,4 +120,6 @@ class Gui:
         self.clear()
         self.algorithm = ga.Solver(self.graph)
         self.algorithm.algorithm(Gui.generation, Gui.count_steps, Gui.p_c, Gui.p_m)
+        #ну если не впадлу можно режим без сохраниний до конуа
+        #сюда отображение присрать и норм
         self.create_menu()

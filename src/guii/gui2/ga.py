@@ -5,6 +5,7 @@ import networkx as nx
 import random
 
 class Solver:
+    solutionz=[]
 
     def __init__(self, graph: nx.Graph):
         self.graph = graph
@@ -65,6 +66,7 @@ class Solver:
         generation = [self.random_prim() for _ in range(gen)]
 
         global answer
+        best_solutions = []
 
         for i in range(count_steps):
             generation.sort(key=self.tree_weight)
@@ -78,13 +80,14 @@ class Solver:
             #         fitness
             #     )
             # )
-            mod_fitness = [100-i for i in range(gen)]
+            best_solutions.append(generation[:3])
+            mod_fitness = [gen-i for i in range(gen)]
             # print(mod_fitness)
             parents = random.choices(generation, weights=mod_fitness, k=gen//2)
             # print(parents)
             # print(sorted(tuple(map(self.tree_weight, parents))))
             generation = []
-            while len(generation) != 100:
+            while len(generation) != gen:
                 couple = random.choices(parents, k=2)
                 if random.random() > p_c:
                     continue
@@ -95,6 +98,16 @@ class Solver:
 
         generation.sort(key=self.tree_weight)
         fitness = tuple(map(self.tree_weight, generation))
+
+        with open('best_solutions.txt', 'w') as f:
+            for step, solutions in enumerate(best_solutions):
+                for sol in solutions:
+                    f.write(f'{sol}\n')
+
+        for step, solutions in enumerate(best_solutions):
+            for sol in solutions:
+                self.solutionz.append(sol, self.tree_weight(sol))
+
         print(generation)
         print(fitness)
         pass
