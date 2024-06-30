@@ -6,6 +6,7 @@ import random
 
 class Solver:
     solutionz=[]
+    lengths=[]
 
     def __init__(self, graph: nx.Graph):
         self.graph = graph
@@ -101,12 +102,15 @@ class Solver:
 
         with open('best_solutions.txt', 'w') as f:
             for step, solutions in enumerate(best_solutions):
+                f.write(f'Step {step}:\n')
                 for sol in solutions:
-                    f.write(f'{sol}\n')
+                    f.write(f'{sol} - Fitness: {self.tree_weight(sol)}\n')
 
         for step, solutions in enumerate(best_solutions):
             for sol in solutions:
-                self.solutionz.append(sol, self.tree_weight(sol))
+                self.solutionz.append(sol)
+                self.lengths.append(self.tree_weight(sol))
+
 
         print(generation)
         print(fitness)
