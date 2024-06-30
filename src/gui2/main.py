@@ -1,4 +1,4 @@
-from Gui import Gui
+from modules.Gui import Gui
 
 g = Gui()
 g.start()

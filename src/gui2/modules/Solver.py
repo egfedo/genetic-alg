@@ -1,12 +1,17 @@
-import copy
-import time
-
 import networkx as nx
 import random
 
-class Solver:
 
-    def __init__(self, graph: nx.Graph):
+class Solver:
+    solutionz = []
+    lengths = []
+
+    def __init__(self, graph: nx.Graph, size_gener, count_gener, p_c, p_m):
+        self.size_gener = size_gener
+        self.count_gener = count_gener
+        self.p_c = p_c
+        self.p_m = p_m
+
         self.graph = graph
         self.nodes = list(graph.nodes)
         self.edges = list(graph.edges)
@@ -14,13 +19,6 @@ class Solver:
 
     def compare_edges(self, e1: tuple, e2: tuple):
         return (e1[0] == e2[0] and e1[1] == e2[1]) or (e1[0] == e2[1] and e1[1] == e2[0])
-
-    # def rand_walk(self, allowed_edges: set = None):
-    #     visited = [False * len(self.nodes)]
-    #     tree = set()
-    #     curr = 0
-    #     adj = self.graph.adja
-    #     while len(tree) < len(self.nodes) - 1:
 
     def random_prim(self, subgraph_set: set = None):
         subgraph = self.graph.edge_subgraph(subgraph_set) if subgraph_set is not None else self.graph
@@ -62,68 +60,32 @@ class Solver:
         return self.random_prim(subgraph)
 
     def algorithm(self):
-        generation = [self.random_prim() for _ in range(100)]
+        generation = [self.random_prim() for _ in range(self.size_gener)]
 
         global answer
+        best_solutions = [None] * self.count_gener
+        best_weights = [None] * self.count_gener
 
-        for i in range(600):
+        for i in range(self.count_gener):
             generation.sort(key=self.tree_weight)
-            if self.tree_weight(generation[0]) == answer:
-                print(f"Converged at iteration #{i}")
-                break
-            # print(fitness)
-            # mod_fitness = tuple(
-            #     map(
-            #         lambda x: ((x - worst) / (best - worst)) * 100 + ((x - best) / (worst - best)) * 40,
-            #         fitness
-            #     )
-            # )
-            mod_fitness = [100-i for i in range(100)]
-            # print(mod_fitness)
-            parents = random.choices(generation, weights=mod_fitness, k=50)
-            # print(parents)
-            # print(sorted(tuple(map(self.tree_weight, parents))))
+
+
+            best_solutions[i] = generation[:3]
+            best_weights[i] = tuple(map(self.tree_weight, best_solutions[i]))
+
+            mod_fitness = [self.size_gener - i for i in range(self.size_gener)]
+            parents = random.choices(generation, weights=mod_fitness, k=self.size_gener // 2)
             generation = []
-            while len(generation) != 100:
+            while len(generation) != self.size_gener:
                 couple = random.choices(parents, k=2)
-                if random.random() > 0.9:
+                if random.random() > self.p_c:
                     continue
                 child = self.crossover(*couple)
-                if random.random() <= 0.1:
+                if random.random() <= self.p_m:
                     child = self.mutate(child)
                 generation.append(child)
 
-        generation.sort(key=self.tree_weight)
-        fitness = tuple(map(self.tree_weight, generation))
-        print(generation)
-        print(fitness)
-        pass
+        return best_solutions, best_weights
 
     def tree_weight(self, tree: set):
         return sum((self.graph.edges[edge]['weight'] for edge in tree))
-
-
-g = nx.Graph()
-n = 10
-nodes = tuple(i+1 for i in range(n))
-print(nodes)
-answer = 9
-print(answer)
-weights = [
-    [0, 1, 100, 100, 100, 100, 100, 100, 100, 100],
-    [1, 0, 1, 100, 100, 100, 100, 100, 100, 100],
-    [100, 1, 0, 1, 100, 100, 100, 100, 100, 100],
-    [100, 100, 1, 0, 1, 100, 100, 100, 100, 100],
-    [100, 100, 100, 1, 0, 1, 100, 100, 100, 100],
-    [100, 100, 100, 100, 1, 0, 1, 100, 100, 100],
-    [100, 100, 100, 100, 100, 1, 0, 1, 100, 100],
-    [100, 100, 100, 100, 100, 100, 1, 0, 1, 100],
-    [100, 100, 100, 100, 100, 100, 100, 1, 0, 1],
-    [100, 100, 100, 100, 100, 100, 100, 100, 1, 0]
-]
-print([(x, y, weights[x-1][y-1]) for x in nodes for y in nodes])
-g.add_weighted_edges_from([(x, y, weights[x-1][y-1]) for x in nodes for y in nodes])
-solver = Solver(g)
-start = time.time_ns()
-solver.algorithm()
-print(f"Elapsed time: {time.time_ns() - start} ns")
