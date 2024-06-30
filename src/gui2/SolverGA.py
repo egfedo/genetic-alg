@@ -17,10 +17,6 @@ class SolverGA:
         self.p_m = p_m
         self.nodes = list(graph.nodes)
         self.edges = list(graph.edges)
-        self.edge_no = dict(zip(self.edges, [i for i in range(len(self.edges))]))
-
-    def compare_edges(self, e1: tuple, e2: tuple):
-        return (e1[0] == e2[0] and e1[1] == e2[1]) or (e1[0] == e2[1] and e1[1] == e2[0])
 
     def random_prim(self, subgraph_set: set = None):
         subgraph = self.graph.edge_subgraph(subgraph_set) if subgraph_set is not None else self.graph
@@ -50,6 +46,7 @@ class SolverGA:
         comp_a, comp_b = tuple(nx.components.connected_components(tree))
         edges = self.edges
         random.shuffle(edges)
+
         for edge in edges:
             if edge == rand_edge:
                 continue
@@ -57,27 +54,33 @@ class SolverGA:
                 output.add(edge)
                 return output
 
+        # Don't mutate if no other edge was found
+        output.add(rand_edge)
+        return output
+
     def crossover(self, tree_a: set, tree_b: set):
         subgraph = tree_a.union(tree_b)
         return self.random_prim(subgraph)
 
-    def first_step(self):
-        self.generation = [self.random_prim() for _ in range(100)]
+    def first_step(self) -> tuple:
+        self.generation = [self.random_prim() for _ in range(self.size_gener)]
+        return tuple(self.generation)
 
-    def next_step(self):
+    def next_step(self) -> tuple:
         self.step += 1
         self.generation.sort(key=self.tree_weight)
-        mod_fitness = [100 - i for i in range(100)]
-        parents = random.choices(self.generation, weights=mod_fitness, k=50)
+        mod_fitness = [self.size_gener - i for i in range(self.size_gener)]
+        parents = random.choices(self.generation, weights=mod_fitness, k=self.size_gener//2)
         self.generation = []
-        while len(self.generation) != 100:
+        while len(self.generation) != self.size_gener:
             couple = random.choices(parents, k=2)
-            if random.random() > 0.9:
+            if random.random() > self.p_c:
                 continue
             child = self.crossover(*couple)
-            if random.random() <= 0.1:
+            if random.random() <= self.p_m:
                 child = self.mutate(child)
             self.generation.append(child)
+        return tuple(self.generation)
 
     def tree_weight(self, tree: set):
         return sum((self.graph.edges[edge]['weight'] for edge in tree))

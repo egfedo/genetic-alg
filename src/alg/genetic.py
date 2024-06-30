@@ -68,23 +68,11 @@ class Solver:
 
         for i in range(600):
             generation.sort(key=self.tree_weight)
-            fitness = tuple(map(self.tree_weight, generation))
-            if fitness[0] == answer:
+            if self.tree_weight(generation[0]) == answer:
                 print(f"Converged at iteration #{i}")
                 break
-            # print(fitness)
-            best, worst = fitness[0], fitness[99]
-            # mod_fitness = tuple(
-            #     map(
-            #         lambda x: ((x - worst) / (best - worst)) * 100 + ((x - best) / (worst - best)) * 40,
-            #         fitness
-            #     )
-            # )
             mod_fitness = [100-i for i in range(100)]
-            # print(mod_fitness)
             parents = random.choices(generation, weights=mod_fitness, k=50)
-            # print(parents)
-            # print(sorted(tuple(map(self.tree_weight, parents))))
             generation = []
             while len(generation) != 100:
                 couple = random.choices(parents, k=2)
