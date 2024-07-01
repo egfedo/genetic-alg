@@ -121,11 +121,12 @@ class VisualisatorGA:
         self.update()
 
     def show_best_solution(self, i_solution):
-        for widget in self.frm_mid.winfo_children():
-            widget.destroy()
-
         if i_solution >= self.size_generation:
             showerror("Ошибка", "Из-за размера поколения данного решения не существует!")
+            return
+
+        for widget in self.frm_mid.winfo_children():
+            widget.destroy()
 
         graph = self.graph.edge_subgraph(self.best_solutions[self.step][i_solution])
         figure = self.drawer.draw_graph(graph, (7, 7))
