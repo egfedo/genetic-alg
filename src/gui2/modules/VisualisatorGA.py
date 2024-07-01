@@ -3,6 +3,7 @@ from modules.Drawer import Drawer
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from modules.Solver import Solver
 import networkx as nx
+from tkinter.messagebox import showerror
 
 class VisualisatorGA:
     def __init__(self, drawer: Drawer, graph: nx.Graph, size_gener, count_gener, p_c, p_m):
@@ -91,8 +92,8 @@ class VisualisatorGA:
         self.lbl_best_weight = tk.Label(frm_best_weight, text=self.best_weights[0][0], font='Calibri 14')
         self.lbl_best_weight.pack(side='left', anchor='w', expand=True)
 
-        self.frm_graphic = tk.Frame(frm, relief="solid", bd=2, height=500, width=500, bg='#fafafa')
-        self.frm_graphic.pack(side='top', expand=True, padx=0)
+        self.frm_graphic = tk.Frame(frm, relief="solid", bd=2, height=500, width=450, bg='#fafafa')
+        self.frm_graphic.pack(side='top', expand=True, fill='x')
 
     def update(self):
         self.lbl_step.config(text=self.step)
@@ -123,6 +124,9 @@ class VisualisatorGA:
         for widget in self.frm_mid.winfo_children():
             widget.destroy()
 
+        if i_solution >= self.size_generation:
+            showerror("Ошибка", "Из-за размера поколения данного решения не существует!")
+
         graph = self.graph.edge_subgraph(self.best_solutions[self.step][i_solution])
         figure = self.drawer.draw_graph(graph, (7, 7))
         canvas = FigureCanvasTkAgg(figure, self.frm_mid)
@@ -140,7 +144,7 @@ class VisualisatorGA:
         figure = self.drawer.draw_graphic(y, (4, 4))
         canvas = FigureCanvasTkAgg(figure, self.frm_graphic)
         canvas.draw()
-        canvas.get_tk_widget().pack(expand=True)
+        canvas.get_tk_widget().pack(expand=True, fill='both')
 
 
 
