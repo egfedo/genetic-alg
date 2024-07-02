@@ -6,7 +6,6 @@ class ReaderMatrix:
         except FileNotFoundError:
             raise FileNotFoundError("Ошибка открытия файла")
 
-
     def read_sim_square_matrix(self):
         matrix = []
 
@@ -24,7 +23,7 @@ class ReaderMatrix:
             # преобразованую строчку добавляем в матрицу
             matrix.append(row)
         if not self.matr_is_sim_square(matrix):
-            raise ValueError("Матрица не является квадратной и симметричной!")
+            raise ValueError("Матрица не является квадратной и/или симметричной!")
         return matrix
 
     def matr_is_sim_square(self, matr):

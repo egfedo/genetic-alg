@@ -1,6 +1,7 @@
 import tkinter as tk
 import networkx as nx
-from src.modules.Drawer import Drawer
+
+from src.modules import Drawer
 from src.modules.MatrixGetterFromFile import MatrixGetterFromFile
 from src.modules.MatrixGetterFromGui import MatrixGetterFromGui
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -13,7 +14,6 @@ class Gui:
         self.window = tk.Tk()
         self.window.state('zoomed')
         self.window.title('Генетический алгоритм для поиска МОД')
-        self.drawer = Drawer()
         self.graph = None
 
         self.size_generation = 10
@@ -104,7 +104,7 @@ class Gui:
         for widget in self.frm_mid.winfo_children():
             widget.destroy()
 
-        figure = self.drawer.draw_graph(self.graph, (8, 8))
+        figure = Drawer.draw_graph(self.graph, (8, 8))
         canvas = FigureCanvasTkAgg(figure, self.frm_mid)
         canvas.draw()
         canvas.get_tk_widget().pack(expand=True)
@@ -160,4 +160,4 @@ class Gui:
         if self.graph is None:
             showerror("Ошибка", "Граф не задан!")
             return
-        VisualisatorGA(self.drawer, self.graph, self.size_generation, self.count_generations, self.p_c, self.p_m)
+        VisualisatorGA(self.graph, self.size_generation, self.count_generations, self.p_c, self.p_m)

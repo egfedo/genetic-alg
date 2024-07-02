@@ -3,8 +3,6 @@ import random
 
 
 class Solver:
-    solutionz = []
-    lengths = []
 
     def __init__(self, graph: nx.Graph, size_gener, count_gener, p_c, p_m):
         self.size_gener = size_gener
@@ -15,10 +13,6 @@ class Solver:
         self.graph = graph
         self.nodes = list(graph.nodes)
         self.edges = list(graph.edges)
-        self.edge_no = dict(zip(self.edges, [i for i in range(len(self.edges))]))
-
-    def compare_edges(self, e1: tuple, e2: tuple):
-        return (e1[0] == e2[0] and e1[1] == e2[1]) or (e1[0] == e2[1] and e1[1] == e2[0])
 
     def random_prim(self, subgraph_set: set = None):
         subgraph = self.graph.edge_subgraph(subgraph_set) if subgraph_set is not None else self.graph
