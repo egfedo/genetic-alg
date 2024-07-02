@@ -8,11 +8,14 @@ def draw_graph(graph: nx.Graph, size: (int, int), subgraph: nx.Graph = None):
     a = fig.add_subplot()
     a.plot()
     pos = nx.circular_layout(graph)
-    nx.draw_networkx(graph, pos, with_labels=1, ax=a)
+    if subgraph is None:
+        nx.draw_networkx(graph, pos, with_labels=1, ax=a)
+    else:
+        nx.draw_networkx(graph, pos, with_labels=1, ax=a, style=':')
     edge_labels = nx.get_edge_attributes(graph, "weight")
     if subgraph is not None:
         pos = nx.circular_layout(subgraph)
-        nx.draw_networkx_edges(subgraph, pos, ax=a, width=2.75)
+        nx.draw_networkx_edges(subgraph, pos, ax=a, width=2.75,  edge_color='green')
 
     nx.draw_networkx_edge_labels(graph, pos, edge_labels, ax=a)
     margins = {
@@ -39,5 +42,6 @@ def draw_graphic(y, size: (int, int), y_second=None, full_size=None):
     a.legend()
     a.set_xlabel("Номер поколения")
     a.set_ylabel("Приспособленность в поколении")
+    fig.subplots_adjust(right=0.95, top=0.95, left=0.15)
     return fig
 

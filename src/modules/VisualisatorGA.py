@@ -165,4 +165,4 @@ class VisualisatorGA:
                                      )
         canvas = FigureCanvasTkAgg(figure, self.frm_graphic)
         canvas.draw()
-        canvas.get_tk_widget().pack(expand=True, fill='both')
+        canvas.get_tk_widget().pack(expand=True, fill='both', anchor='e')
