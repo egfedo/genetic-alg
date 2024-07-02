@@ -89,15 +89,20 @@ class Gui:
         self.window.mainloop()
 
     def create_graph(self, matrix: [[int]]):
-        self.graph = nx.Graph()
+        graph = nx.Graph()
         for i in range(len(matrix)):
-            self.graph.add_node(str(i + 1))
+            graph.add_node(str(i + 1))
         for i in range(len(matrix)):
             for j in range(i):
                 el = matrix[i][j]
                 if el:
-                    self.graph.add_edge(str(i + 1), str(j + 1), weight=matrix[i][j])
+                    graph.add_edge(str(i + 1), str(j + 1), weight=matrix[i][j])
 
+        if not nx.is_connected(graph):
+            showerror("Ошибка", "Необходимо задать связный граф!")
+            return
+
+        self.graph = graph
         self.show_graph()
 
     def show_graph(self):
