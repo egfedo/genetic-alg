@@ -17,6 +17,9 @@ class VisualisatorGA:
         self.p_c = p_c
         self.p_m = p_m
 
+        self.graph_gui_state = False
+        self.graph_gui_curr = -1
+
         self.graph = graph
         (self.best_solutions,
          self.best_weights,
@@ -53,20 +56,20 @@ class VisualisatorGA:
                                                                                                       expand=True,
                                                                                                       padx=5)
         tk.Button(frm, text='Первое', bg='silver', font='Calibri 14', relief="solid", bd=2,
-                  command=lambda: self.show_best_solution(0)).pack(side='top',
-                                                                   fill='both',
-                                                                   expand=True, pady=20,
-                                                                   padx=5)
+                  command=lambda: self.show_best_solution(0, True)).pack(side='top',
+                                                                         fill='both',
+                                                                         expand=True, pady=20,
+                                                                         padx=5)
         tk.Button(frm, text='Второе', bg='silver', font='Calibri 14', relief="solid", bd=2,
-                  command=lambda: self.show_best_solution(1)).pack(side='top',
-                                                                   fill='both',
-                                                                   expand=True, pady=20,
-                                                                   padx=5)
+                  command=lambda: self.show_best_solution(1, True)).pack(side='top',
+                                                                         fill='both',
+                                                                         expand=True, pady=20,
+                                                                         padx=5)
         tk.Button(frm, text='Третье', bg='silver', font='Calibri 14', relief="solid", bd=2,
-                  command=lambda: self.show_best_solution(2)).pack(side='top',
-                                                                   fill='both',
-                                                                   expand=True, pady=20,
-                                                                   padx=5)
+                  command=lambda: self.show_best_solution(2, True)).pack(side='top',
+                                                                         fill='both',
+                                                                         expand=True, pady=20,
+                                                                         padx=5)
 
         frm_step = tk.Frame(frm)
         frm_step.pack(side='top', fill='both', expand=True, padx=10, pady=50)
@@ -132,7 +135,7 @@ class VisualisatorGA:
         self.step = self.count_generations - 1
         self.update()
 
-    def show_best_solution(self, i_solution):
+    def show_best_solution(self, i_solution, update_state=False):
         if i_solution >= self.size_generation:
             showerror("Ошибка", "Из-за размера поколения данного решения не существует!")
             return
@@ -141,10 +144,18 @@ class VisualisatorGA:
             widget.destroy()
 
         graph = self.graph.edge_subgraph(self.best_solutions[self.step][i_solution])
-        if len(graph.nodes) <= 10:
+
+        if update_state:
+            if i_solution == self.graph_gui_curr:
+                self.graph_gui_state = not self.graph_gui_state
+
+        self.graph_gui_curr = i_solution
+
+        if self.graph_gui_state:
             figure = Drawer.draw_graph(self.graph, (7, 7), subgraph=graph)
         else:
             figure = Drawer.draw_graph(graph, (7, 7))
+
         canvas = FigureCanvasTkAgg(figure, self.frm_mid)
         canvas.draw()
         canvas.get_tk_widget().pack(expand=True, fill='both')
