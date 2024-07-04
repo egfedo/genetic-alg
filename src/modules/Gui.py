@@ -132,11 +132,11 @@ class Gui:
 
         try:
             size_generation = int(entry_size_gener.get())
-            if size_generation <= 0:
+            if size_generation <= 1:
                 raise ValueError()
             self.size_generation = size_generation
         except ValueError:
-            showerror("Ошибка", "Размер поколения задаётся целыми положительными числами!")
+            showerror("Ошибка", "Размер поколения задаётся целыми положительными числами больше единицы!")
             return
 
         try:
