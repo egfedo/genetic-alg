@@ -127,7 +127,7 @@ class Gui:
                 raise ValueError()
             self.count_generations = count_generations
         except ValueError:
-            showerror("Ошибка", "Количество поколений задаётся целыми положительными числами!")
+            showerror("Ошибка", "Количество поколений задаётся целым положительным числом!")
             return
 
         try:
@@ -136,25 +136,25 @@ class Gui:
                 raise ValueError()
             self.size_generation = size_generation
         except ValueError:
-            showerror("Ошибка", "Размер поколения задаётся целыми положительными числами больше единицы!")
+            showerror("Ошибка", "Размер популяции задаётся целым положительным числом больше единицы!")
             return
 
         try:
             p_c = float(entry_p_c.get())
-            if not 0 < p_c < 1:
+            if not 0 < p_c <= 1:
                 raise ValueError()
             self.p_c = p_c
         except ValueError:
-            showerror("Ошибка", "Вероятность скрещивания задаётся вещественным числом от 0 до 1!")
+            showerror("Ошибка", "Вероятность скрещивания задаётся вещественным числом на промежутке (0, 1]!")
             return
 
         try:
             p_m = float(entry_p_m.get())
-            if not 0 < p_m < 1:
+            if not 0 <= p_m <= 1:
                 raise ValueError()
             self.p_m = p_m
         except ValueError:
-            showerror("Ошибка", "Вероятность мутации задаётся вещественным числом от 0 до 1!")
+            showerror("Ошибка", "Вероятность мутации задаётся вещественным числом на промежутке [0, 1]!")
             return
 
     def clear(self):
