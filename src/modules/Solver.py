@@ -49,6 +49,9 @@ class Solver:
                 output.add(edge)
                 return output
 
+        output.add(rand_edge)
+        return output
+
     def crossover(self, tree_a: set, tree_b: set):
         subgraph = tree_a.union(tree_b)
         return self.random_prim(subgraph)
